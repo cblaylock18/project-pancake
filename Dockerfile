@@ -17,5 +17,7 @@ RUN if [ "$APP_TARGET" = "frontend" ]; then \
       pnpm --filter backend build ; \
     fi
 
+RUN echo "APP_TARGET is: $APP_TARGET"
+
 WORKDIR /app/apps/$APP_TARGET
 CMD ["pnpm", "start"]
