@@ -1,10 +1,11 @@
 import express from 'express';
+import type {Express} from "express"
 import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { env } from './env';
 
-export function createServer() {
+export function createServer(): Express {
   const app = express();
   app.use(express.json());
 
