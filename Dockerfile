@@ -1,10 +1,10 @@
 # DOCKER BUILD COMMANDS
 
 # Backend
-# docker build --build-arg APP_TARGET=backend -t my-app-backend .
+# docker compose up --build backend
 
 # Frontend
-# docker build --build-arg APP_TARGET=frontend -t my-app-frontend .
+# docker compose up --build frontend
 
 
 FROM node:20

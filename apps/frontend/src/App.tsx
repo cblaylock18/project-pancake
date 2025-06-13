@@ -18,9 +18,9 @@ function App() {
     const [info, setInfo] = useState()
 
     useEffect(() => {
-        fetch("http://localhost:3000").then(
+        fetch("http://localhost:3000", {mode: "cors"}).then(
             response => response.json()
-        ).then(data => {setInfo(data); console.log(data)})
+        ).then(data => {setInfo(data.message); console.log(data)})
     },[])
 
     return (
