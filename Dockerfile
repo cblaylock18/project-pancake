@@ -27,6 +27,9 @@ COPY packages/shared/package.json packages/shared/
 # Install dependencies
 RUN pnpm install
 
+# Build shared first
+RUN pnpm --filter shared build
+
 # Copy the rest of the application (now that deps are cached)
 COPY . .
 

@@ -14,6 +14,10 @@ jobs:
           node-version: 20
       - run: npm install -g pnpm
       - run: pnpm install
+
+      # Ensure shared types are built before typecheck/test
+      - run: pnpm --filter shared build
+
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test

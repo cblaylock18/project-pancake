@@ -5,12 +5,17 @@ import "./App.css";
 
 // example for you for shared types!
 import type { User } from "@shared/types";
+import { Role } from "@shared/types"
+
 const Sidney: User = {
     id: "some string",
     username: "some other string",
     password: "lamb",
+    createdAt: "today",
+    email: "something@lamb.pancake",
+    role: Role.USER
 };
-console.log(`hi ${Sidney}!!!`);
+console.log(`hi ${Sidney.username}!!!`);
 // end of example!
 
 function App() {

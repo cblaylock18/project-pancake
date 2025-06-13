@@ -2,6 +2,14 @@
     "files": [],
     "references": [
         { "path": "./tsconfig.app.json" },
-        { "path": "./tsconfig.node.json" }
-    ]
+        { "path": "./tsconfig.node.json" },
+        { "path": "../../packages/shared" }
+
+    ],
+    "compilerOptions": {
+        "baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
+        "paths": {
+            "@shared/*": ["../../packages/shared/dist/*"]
+        }
+    }
 }
