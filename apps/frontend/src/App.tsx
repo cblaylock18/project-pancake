@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -15,6 +15,13 @@ console.log(`hi ${Sidney}!!!`);
 
 function App() {
     const [count, setCount] = useState(0);
+    const [info, setInfo] = useState()
+
+    useEffect(() => {
+        fetch("http://localhost:3000").then(
+            response => response.json()
+        ).then(data => {setInfo(data); console.log(data)})
+    },[])
 
     return (
         <>
@@ -35,6 +42,7 @@ function App() {
                 <button onClick={() => setCount((count) => count + 1)}>
                     count is {count}
                 </button>
+                <p>Info is {info}</p>
                 <p>
                     Edit <code>src/App.tsx</code> and save to test HMR
                 </p>

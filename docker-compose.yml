@@ -4,7 +4,7 @@ services:
     image: postgres:15
     restart: always
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     environment:
       POSTGRES_USER: devuser
       POSTGRES_PASSWORD: devpass
@@ -14,13 +14,13 @@ services:
     build:
       context: .
       args:
-        APP_TARGET: backend
+        APP_TARGET: ${APP_TARGET}
     ports:
-      - "3000:3000"
+      - "${BACKEND_PORT:-3000}:3000"
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://devuser:devpass@postgres:5432/devdb
+      DATABASE_URL: ${DATABASE_URL}
     command: >
       sh -c "
       npx prisma migrate deploy &&
