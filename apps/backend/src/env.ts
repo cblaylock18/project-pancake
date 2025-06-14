@@ -5,6 +5,7 @@ dotenv.config()
 export const env = cleanEnv(process.env, {
   DATABASE_URL: str(),
   PORT: port({ default: 3000 }),
-  FRONTEND_ORIGIN_1: str({ default: 'http://localhost:5173' }),
+  FRONTEND_ORIGIN_1: str({ default: 'http://localhost:4173' }),
+  FRONTEND_ORIGIN_2: str({ default: 'http://localhost:5173' }),
   ENVIRONMENT_NAME: str({default: "development"})
 });

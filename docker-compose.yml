@@ -29,3 +29,16 @@ services:
       npx prisma db seed &&
       pnpm run dev
       "
+
+  frontend:
+    build:
+      context: .
+      args:
+        APP_TARGET: frontend
+    ports:
+      - "4173:4173" # local:container
+    depends_on:
+      - backend
+    environment:
+      VITE_BACKEND_URL: http://localhost:3000 # or http://backend:3000 if internal
+    command: pnpm start

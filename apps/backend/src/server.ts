@@ -13,7 +13,7 @@ export function createServer(): Express {
   app.use(helmet());
 
   const corsOptions = {
-    origin: [env.FRONTEND_ORIGIN_1],
+    origin: [env.FRONTEND_ORIGIN_1, env.FRONTEND_ORIGIN_2],
     optionsSuccessStatus: 200,
     credentials: true
   };
