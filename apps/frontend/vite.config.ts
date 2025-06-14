@@ -9,5 +9,10 @@ export default defineConfig({
     alias: {
       '@shared': path.resolve(__dirname, '../../packages/shared/dist')
     }
+  },
+  preview: {
+    host: true,
+    port: 4173,
+    allowedHosts: ['.railway.app']  // ✅ allow all Railway subdomains
   }
 });
