@@ -43,7 +43,7 @@ ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 
 # Generate Prisma client if building the backend
 RUN if [ "$APP_TARGET" = "backend" ]; then \
-      pnpm --filter backend prisma generate ; \
+      pnpm --filter backend generate ; \
     fi
 
 # Build frontend or backend depending on target
