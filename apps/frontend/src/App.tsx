@@ -23,6 +23,7 @@ function App() {
     const [info, setInfo] = useState()
 
     useEffect(() => {
+        console.log(import.meta.env.VITE_BACKEND_URL)
         fetch(import.meta.env.VITE_BACKEND_URL, {mode: "cors"}).then(
             response => response.json()
         ).then(data => {setInfo(data.message); console.log(data)})
