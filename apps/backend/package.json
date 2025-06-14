@@ -13,7 +13,8 @@
         "typecheck": "tsc --noEmit"
     },
     "prisma": {
-        "seed": "tsx prisma/seed.js"
+        "seed": "tsx prisma/seed.js",
+        "generate": "prisma generate"
     },
     "keywords": [],
     "author": "",
