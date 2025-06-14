@@ -1,10 +1,9 @@
-version: '3.9'
 services:
   postgres:
     image: postgres:15
     restart: always
     ports:
-      - "5432:5432"
+      - "5432:5432"  
     environment:
       POSTGRES_USER: devuser
       POSTGRES_PASSWORD: devpass
@@ -16,14 +15,30 @@ services:
       args:
         APP_TARGET: backend
     ports:
-      - "3000:3000"
+      - "3000:3000"  
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://devuser:devpass@postgres:5432/devdb
+      DATABASE_URL: ${DATABASE_URL}
+      FRONTEND_ORIGIN_1: ${FRONTEND_ORIGIN_1}
+      PORT: 3000  
+      ENVIRONMENT_NAME: development
     command: >
       sh -c "
       npx prisma migrate deploy &&
       npx prisma db seed &&
       pnpm run dev
       "
+
+  frontend:
+    build:
+      context: .
+      args:
+        APP_TARGET: frontend
+    ports:
+      - "4173:4173" # local:container
+    depends_on:
+      - backend
+    environment:
+      VITE_BACKEND_URL: http://localhost:3000 # or http://backend:3000 if internal
+    command: pnpm start

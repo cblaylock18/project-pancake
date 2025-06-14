@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -7,11 +7,15 @@ async function main() {
     data: [
       {
         username: 'alice',
+        email: 'alice@example.com',
         password: 'password123', // Note: hash this in real apps
+        role: Role.USER,
       },
       {
         username: 'bob',
+        email: 'bob@example.com',
         password: 'secure456',
+        role: Role.ADMIN,
       },
     ],
     skipDuplicates: true,

@@ -14,6 +14,7 @@ jobs:
           node-version: 20
       - run: npm install -g pnpm
       - run: pnpm install
+      - run: pnpm --filter shared build
       - run: pnpm --filter backend prisma generate
       - run: pnpm --filter backend prisma migrate deploy
         env:
