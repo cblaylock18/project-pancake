@@ -5,6 +5,8 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { env } from './env';
 
+import prisma from './db';
+
 export function createServer(): Express {
   const app = express();
   app.use(express.json());
@@ -37,7 +39,10 @@ app.use(cors(corsOptions));
   app.use(limiter);
 
   app.get('/health', (req, res) => {res.status(200).json({message: 'OK'})});
-  app.get('/', (req, res) => {res.status(200).json({message: 'Hi from the backend!'})});
+  app.get('/', async (req, res) => {
+
+    const profiles = await prisma.user.findMany()
+    res.status(200).json({message: 'hi from the backend!',profiles})});
 
   return app;
 }

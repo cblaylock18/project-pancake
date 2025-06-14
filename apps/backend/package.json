@@ -10,7 +10,10 @@
         "test": "vitest run --config ./src/vitest.config.ts",
         "test:watch": "vitest --config ./src/vitest.config.ts",
         "lint": "eslint src --ext .ts",
-        "typecheck": "tsc --noEmit"
+        "typecheck": "tsc --noEmit",
+        "migrate": "prisma migrate deploy",
+        "seed": "prisma db seed",
+        "generate": "prisma generate"
     },
     "prisma": {
         "seed": "tsx prisma/seed.js"

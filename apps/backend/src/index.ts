@@ -8,8 +8,8 @@ import type { User } from "@shared/types";
 import { Role } from "@shared/types"
 
 const Sidney: User = {
-    id: "some string",
-    username: "some other string",
+    id: "sidney",
+    username: "sidney",
     password: "lamb",
     createdAt: "today",
     email: "something@lamb.pancake",

@@ -37,13 +37,17 @@ RUN pnpm --filter shared build
 ARG APP_TARGET
 ENV APP_TARGET=$APP_TARGET
 
+# Set environment name (development, production, etc.) to configure app behavior
+ARG ENVIRONMENT_NAME
+ENV ENVIRONMENT_NAME=$ENVIRONMENT_NAME
+
 #Inject backend url to Vite
 ARG VITE_BACKEND_URL
 ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 
 # Generate Prisma client if building the backend
 RUN if [ "$APP_TARGET" = "backend" ]; then \
-      pnpm --filter backend prisma generate ; \
+      pnpm --filter backend generate ; \
     fi
 
 # Build frontend or backend depending on target
@@ -55,6 +59,12 @@ RUN if [ "$APP_TARGET" = "frontend" ]; then \
 
 # Set working directory to the correct app
 WORKDIR /app/apps/$APP_TARGET
+
+# Run database migration and seeding if in development environment
+RUN if [ "$APP_TARGET" = "backend" ] && [ "$ENVIRONMENT_NAME" = "development" ]; then \
+      pnpm --filter backend migrate && \
+      pnpm --filter backend seed ; \
+    fi
 
 # Start the app
 CMD ["pnpm", "start"]

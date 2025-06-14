@@ -1,28 +1,30 @@
+version: "3.8"
+
 services:
   postgres:
     image: postgres:15
     restart: always
     ports:
-      - "5432:5432"  
+      - "5432:5432"
     environment:
       POSTGRES_USER: devuser
       POSTGRES_PASSWORD: devpass
       POSTGRES_DB: devdb
 
   backend:
-    build:
+    image: cblaylock18/project-pancake-backend # fallback for teammates
+    build: # used if building locally
       context: .
       args:
         APP_TARGET: backend
     ports:
-      - "3000:3000"  
+      - "3000:3000"
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: ${DATABASE_URL}
-      FRONTEND_ORIGIN_1: ${FRONTEND_ORIGIN_1}
-      PORT: 3000  
-      ENVIRONMENT_NAME: development
+      DATABASE_URL: ${DATABASE_URL:-postgres://devuser:devpass@postgres:5432/devdb}
+      FRONTEND_ORIGIN_1: ${FRONTEND_ORIGIN_1:-http://localhost:4173}
+      PORT: 3000
     command: >
       sh -c "
       npx prisma migrate deploy &&
@@ -36,9 +38,9 @@ services:
       args:
         APP_TARGET: frontend
     ports:
-      - "4173:4173" # local:container
+      - "4173:4173"
     depends_on:
       - backend
     environment:
-      VITE_BACKEND_URL: http://localhost:3000 # or http://backend:3000 if internal
+      VITE_BACKEND_URL: http://localhost:3000
     command: pnpm start
