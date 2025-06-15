@@ -14,4 +14,7 @@ export const env = cleanEnv(process.env, {
     GOOGLE_CLIENT_ID: str(),
     GOOGLE_CLIENT_SECRET: str(),
     SESSION_SECRET: str(),
+    BACKEND_URL: str({
+        default: "http://localhost:3000",
+    }),
 });
