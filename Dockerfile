@@ -60,13 +60,14 @@ RUN if [ "$APP_TARGET" = "frontend" ]; then \
 # Set working directory to the correct app
 WORKDIR /app/apps/$APP_TARGET
 
-# Run migration (always), seed if ENV is development
-RUN if [ "$APP_TARGET" = "backend" ]; then \
-      pnpm --filter backend migrate && \
-      if [ "$ENVIRONMENT_NAME" = "development" ]; then \
-        pnpm --filter backend seed ; \
-      fi \
-    ; fi
-
-# Start the app
-CMD ["pnpm", "start"]
+# Run migration (always), seed if ENV is development, then start app
+CMD sh -c "\
+  if [ \"$APP_TARGET\" = \"backend\" ]; then \
+    pnpm --filter backend migrate && \
+    if [ \"$ENVIRONMENT_NAME\" = \"development\" ]; then \
+      pnpm --filter backend seed ; \
+    fi && \
+    pnpm start ; \
+  else \
+    pnpm start ; \
+  fi"
