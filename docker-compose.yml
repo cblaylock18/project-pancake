@@ -1,46 +1,53 @@
 version: "3.8"
 
 services:
-  postgres:
-    image: postgres:15
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: devuser
-      POSTGRES_PASSWORD: devpass
-      POSTGRES_DB: devdb
+    postgres:
+        image: postgres:15
+        restart: always
+        ports:
+            - "5432:5432"
+        env_file:
+            - .env
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER:-devuser}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-devpass}
+            POSTGRES_DB: ${POSTGRES_DB:-devdb}
 
-  backend:
-    image: cblaylock18/project-pancake-backend # fallback for teammates
-    build: # used if building locally
-      context: .
-      args:
-        APP_TARGET: backend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    environment:
-      DATABASE_URL: ${DATABASE_URL:-postgres://devuser:devpass@postgres:5432/devdb}
-      FRONTEND_ORIGIN_1: ${FRONTEND_ORIGIN_1:-http://localhost:4173}
-      PORT: 3000
-    command: >
-      sh -c "
-      npx prisma migrate deploy &&
-      npx prisma db seed &&
-      pnpm run dev
-      "
+    backend:
+        image: cblaylock18/project-pancake-backend
+        build:
+            context: .
+            args:
+                APP_TARGET: backend
+        ports:
+            - "3000:3000"
+        depends_on:
+            - postgres
+        env_file:
+            - .env
+        environment:
+            DATABASE_URL: ${DATABASE_URL}
+            AUTH_SECRET: ${AUTH_SECRET}
+            FRONTEND_ORIGIN_1: ${FRONTEND_ORIGIN_1}
+            PORT: ${PORT:-3000}
+        command: >
+            sh -c "
+            npx prisma migrate deploy &&
+            npx prisma db seed &&
+            pnpm run dev
+            "
 
-  frontend:
-    build:
-      context: .
-      args:
-        APP_TARGET: frontend
-    ports:
-      - "4173:4173"
-    depends_on:
-      - backend
-    environment:
-      VITE_BACKEND_URL: http://localhost:3000
-    command: pnpm start
+    frontend:
+        build:
+            context: .
+            args:
+                APP_TARGET: frontend
+        ports:
+            - "4173:4173"
+        depends_on:
+            - backend
+        env_file:
+            - .env
+        environment:
+            VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+        command: pnpm start
