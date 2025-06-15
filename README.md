@@ -43,8 +43,11 @@ docker compose pull backend
 docker compose up
 ```
 
--   Uses the pre-built Docker Hub image
--   Also starts the local PostgreSQL and frontend containers
+- Uses the pre-built Docker Hub image
+- Also starts the local PostgreSQL
+
+Then from root, start live preview with:
+`pnpm --filter frontend dev`
 
 ---
 
