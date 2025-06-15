@@ -23,6 +23,7 @@
     "license": "ISC",
     "packageManager": "pnpm@10.12.1",
     "dependencies": {
+        "@auth/express": "^0.10.1",
         "@prisma/client": "^6.9.0",
         "cors": "^2.8.5",
         "dotenv": "^16.5.0",
