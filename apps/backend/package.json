@@ -12,6 +12,7 @@
         "lint": "eslint src --ext .ts",
         "typecheck": "tsc --noEmit",
         "migrate": "prisma migrate deploy",
+        "migrate-dev": "prisma migrate dev",
         "seed": "prisma db seed",
         "generate": "prisma generate"
     },
@@ -24,12 +25,17 @@
     "packageManager": "pnpm@10.12.1",
     "dependencies": {
         "@prisma/client": "^6.9.0",
+        "@types/passport": "^1.0.17",
+        "@types/passport-google-oauth2": "^0.1.10",
         "cors": "^2.8.5",
         "dotenv": "^16.5.0",
         "envalid": "^8.0.0",
         "express": "^5.1.0",
         "express-rate-limit": "^7.5.0",
+        "express-session": "^1.18.1",
         "helmet": "^8.1.0",
+        "passport": "^0.7.0",
+        "passport-google-oauth2": "^0.2.0",
         "prisma": "^6.9.0",
         "shared": "^0.2.0"
     },
@@ -37,6 +43,7 @@
         "@eslint/js": "^9.28.0",
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.3",
+        "@types/express-session": "^1.18.2",
         "@types/supertest": "^6.0.3",
         "eslint": "^9.28.0",
         "globals": "^16.2.0",

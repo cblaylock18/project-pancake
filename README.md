@@ -9,8 +9,8 @@ docker build -t cblaylock18/project-pancake-backend --build-arg APP_TARGET=backe
 docker push cblaylock18/project-pancake-backend
 ```
 
-- Uses the monorepo root `Dockerfile`
-- Builds only the backend using `APP_TARGET`
+-   Uses the monorepo root `Dockerfile`
+-   Builds only the backend using `APP_TARGET`
 
 ---
 
@@ -22,11 +22,11 @@ docker push cblaylock18/project-pancake-backend
 docker compose up --build
 ```
 
-- Automatically builds backend and frontend as needed
-- Backend runs:
-  - `prisma migrate deploy`
-  - `prisma db seed`
-  - `pnpm start`
+-   Automatically builds backend and frontend as needed
+-   Backend runs:
+    -   `prisma migrate deploy`
+    -   `prisma db seed`
+    -   `pnpm start`
 
 > Make sure your `.env` file is present or environment variables are set
 
@@ -36,21 +36,26 @@ docker compose up --build
 
 ### Pull and run the latest backend image
 
+-   make sure you have the latest .env file
+
 ```bash
 docker compose pull backend
 docker compose up
 ```
 
 - Uses the pre-built Docker Hub image
-- Also starts the local PostgreSQL and frontend containers
+- Also starts the local PostgreSQL
+
+Then from root, start live preview with:
+`pnpm --filter frontend dev`
 
 ---
 
 ## 🔁 Prisma Sync on Railway (Remote Deployments)
 
-- On Railway, the `ENVIRONMENT_NAME=development` variable triggers the same Prisma setup:
-  - `prisma migrate deploy`
-  - `prisma db seed`
+-   On Railway, the `ENVIRONMENT_NAME=development` variable triggers the same Prisma setup:
+    -   `prisma migrate deploy`
+    -   `prisma db seed`
 
 ✅ This ensures your remote dev DB is reseeded on each deploy.
 
@@ -75,8 +80,8 @@ sudo kill <PID>
 
 ## ✅ Notes & Gotchas
 
-- Prisma seed script uses `skipDuplicates: true` so it won’t overwrite data
-- Prisma generate is handled in Dockerfile:
+-   Prisma seed script uses `skipDuplicates: true` so it won’t overwrite data
+-   Prisma generate is handled in Dockerfile:
 
 ```dockerfile
 RUN if [ "$APP_TARGET" = "backend" ]; then \
@@ -84,14 +89,14 @@ RUN if [ "$APP_TARGET" = "backend" ]; then \
 fi
 ```
 
-- To run PostgreSQL locally (outside Docker):
+-   To run PostgreSQL locally (outside Docker):
 
 ```bash
 sudo systemctl restart postgresql
 psql -U <your-username>
 ```
 
-- Railway deployment logs might show errors if `generate`, `migrate`, or `seed` are missing or misconfigured — be sure to include them in `package.json`:
+-   Railway deployment logs might show errors if `generate`, `migrate`, or `seed` are missing or misconfigured — be sure to include them in `package.json`:
 
 ```json
 "scripts": {
@@ -100,3 +105,5 @@ psql -U <your-username>
   "seed": "prisma db seed"
 }
 ```
+
+-   Make sure to build types with the `pnpm build` command before deploying to ensure type safety and consistency in packages/shared
