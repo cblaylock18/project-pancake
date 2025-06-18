@@ -3,7 +3,9 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
+  - '@3d-dice/dice-box'
   - '@prisma/client'
   - '@prisma/engines'
+  - '@tailwindcss/oxide'
   - esbuild
   - prisma
