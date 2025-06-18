@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { authFailure, authLogout } from "src/controllers/auth.controller";
+import { authFailure, authLogout } from "../controllers/auth.controller";
 
 export const authRouter: Router = Router();
 
