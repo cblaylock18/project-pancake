@@ -3,4 +3,4 @@ import { logout } from "../controllers/logout.controller";
 
 export const logoutRouter: Router = Router();
 
-logoutRouter.get("/", logout);
+logoutRouter.post("/", logout);

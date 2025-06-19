@@ -1,38 +1,44 @@
 import { useEffect, useRef, useState } from "react";
 // @ts-expect-error no types for this lib
 import DiceBox from "@3d-dice/dice-box";
+import { useAuth } from "./context/AuthContext";
 
 export default function DiceBoxContainer() {
-    const diceBoxRef = useRef(null);
+    const diceBoxRef = useRef<HTMLDivElement | null>(null);
     const [rollValue, setRollValue] = useState(0);
     const [diceBox, setDiceBox] = useState(null);
+    const { user } = useAuth();
 
     useEffect(() => {
+        const container = diceBoxRef.current;
+        if (!container) return;
+
         const newDiceBox = new DiceBox({
-            assetPath: "/assets/", // include the trailing backslash
+            assetPath: "/assets/",
             scale: 12,
             theme: "rock",
-            container: "#dice-box",
-            themeColor: "#808080", // dice color
+            themeColor: "#808080",
+            container: `#${container.id}`, // container is "#dice-box"
         });
 
-        async function initializeDice() {
-            const initializedDiceBox = await newDiceBox.init();
+        newDiceBox.init().then(() => {
+            setDiceBox(newDiceBox);
+        });
 
-            setDiceBox(initializedDiceBox);
-        }
-
-        initializeDice();
+        return () => {
+            setDiceBox(null);
+            // React way: just clear the container's content if needed
+            container.innerHTML = "";
+        };
     }, []);
 
     async function roll() {
-        if (!diceBox) {
-            return;
-        }
+        if (!diceBox) return;
         // @ts-expect-error no types for this lib
         await diceBox.roll("2d20");
         // @ts-expect-error no types for this lib
         const rollResult = await diceBox.getRollResults("2d20");
+
         setRollValue(rollResult[0].value);
     }
 
@@ -43,12 +49,15 @@ export default function DiceBoxContainer() {
             ) : (
                 <button disabled>Loading dice roller...</button>
             )}
-            <p className="text-5xl">Roll Total: {rollValue}</p>
+            <p className="text-5xl">
+                Roll Total: {rollValue}
+                {user ? ` Great toss ${user.username}!!` : ""}
+            </p>
             <div
                 ref={diceBoxRef}
                 id="dice-box"
                 className="w-full h-96 border rounded-lg bg-slate-800 m-0 p-0"
-            ></div>
+            />
         </>
     );
 }

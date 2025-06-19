@@ -4,5 +4,5 @@ export const isLoggedIn: RequestHandler = (req, res, next) => {
     if (req.user) {
         return next();
     }
-    res.status(401).json({ message: "Unauthorized" });
+    res.status(204).end(); // no error, just "no user"
 };

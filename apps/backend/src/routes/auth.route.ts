@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
-import { authFailure, authLogout } from "../controllers/auth.controller";
+import { authFailure } from "../controllers/auth.controller";
+import { env } from "../config/env";
 
 export const authRouter: Router = Router();
 
@@ -12,11 +13,10 @@ authRouter.get(
 authRouter.get(
     "/google/callback",
     passport.authenticate("google", {
-        successRedirect: "/profile",
-        failureRedirect: "/auth/failure",
+        successRedirect: `${env.FRONTEND_ORIGIN_1}`,
+        failureRedirect: "/auth/failure", // will need to be updated to frontend route for failure
     })
 );
 
+// will need to be updated to frontend route for failure
 authRouter.get("/failure", authFailure);
-
-authRouter.get("/logout", authLogout);
