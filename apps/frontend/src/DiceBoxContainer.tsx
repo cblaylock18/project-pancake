@@ -1,24 +1,63 @@
-import { useEffect, useRef } from "react";
-// @ts-expect-error no types for this lib, will do later
+import { useEffect, useRef, useState } from "react";
+// @ts-expect-error no types for this lib
 import DiceBox from "@3d-dice/dice-box";
+import { useAuth } from "./context/AuthContext";
 
 export default function DiceBoxContainer() {
-    const diceBoxRef = useRef(null);
-    // @ts-expect-error no types for this library
-    let diceBox = null;
+    const diceBoxRef = useRef<HTMLDivElement | null>(null);
+    const [rollValue, setRollValue] = useState(0);
+    const [diceBox, setDiceBox] = useState(null);
+    const { user } = useAuth();
 
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        diceBox = new DiceBox({
-            assetPath: "/assets/", // include the trailing backslash
-            scale: 9,
+        const container = diceBoxRef.current;
+        if (!container) return;
+
+        const newDiceBox = new DiceBox({
+            assetPath: "/assets/",
+            scale: 12,
+            theme: "rock",
+            themeColor: "#808080",
+            container: `#${container.id}`, // container is "#dice-box"
         });
 
-        diceBox.init().then(() => {
-            // @ts-expect-error no types for this library
-            diceBox.roll("2d20"); // Example roll
+        newDiceBox.init().then(() => {
+            setDiceBox(newDiceBox);
         });
+
+        return () => {
+            setDiceBox(null);
+            // React way: just clear the container's content if needed
+            container.innerHTML = "";
+        };
     }, []);
 
-    return <div ref={diceBoxRef} id="dice-box" className=""></div>;
+    async function roll() {
+        if (!diceBox) return;
+        // @ts-expect-error no types for this lib
+        await diceBox.roll("2d20");
+        // @ts-expect-error no types for this lib
+        const rollResult = await diceBox.getRollResults("2d20");
+
+        setRollValue(rollResult[0].value);
+    }
+
+    return (
+        <>
+            {diceBox ? (
+                <button onClick={roll}>Roll 2d20!</button>
+            ) : (
+                <button disabled>Loading dice roller...</button>
+            )}
+            <p className="text-5xl">
+                Roll Total: {rollValue}
+                {user ? ` Great toss ${user.username}!!` : ""}
+            </p>
+            <div
+                ref={diceBoxRef}
+                id="dice-box"
+                className="w-full h-96 border rounded-lg bg-slate-800 m-0 p-0"
+            />
+        </>
+    );
 }
