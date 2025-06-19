@@ -32,8 +32,8 @@ function App() {
 
     return (
         <>
-            <DiceBoxContainer />
             <div className="text-4xl">{info}</div>
+            <DiceBoxContainer />
         </>
     )
 }
