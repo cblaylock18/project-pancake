@@ -17,4 +17,6 @@ export const env = cleanEnv(process.env, {
     BACKEND_URL: str({
         default: "http://localhost:3000",
     }),
+    REDISHOST: str(),
+    REDISPORT: port({ default: 6379 }),
 });

@@ -37,3 +37,21 @@ export async function getUserByGoogleId(googleId: string) {
         throw new Error("User not found");
     }
 }
+
+export async function getAllUsers() {
+    try {
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                googleId: true,
+                createdAt: true,
+            },
+        });
+        return users;
+    } catch (err) {
+        console.error("Error fetching all users:", err);
+        throw new Error("Could not fetch users");
+    }
+}

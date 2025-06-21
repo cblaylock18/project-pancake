@@ -35,7 +35,7 @@ export default function DiceBoxContainer() {
     async function roll() {
         if (!diceBox) return;
         // @ts-expect-error no types for this lib
-        await diceBox.roll("2d20");
+        await diceBox.roll("20d20");
         // @ts-expect-error no types for this lib
         const rollResult = await diceBox.getRollResults("2d20");
 
