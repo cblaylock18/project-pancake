@@ -5,13 +5,19 @@ services:
         image: postgres:15
         restart: always
         ports:
-            - "5432:5432"
+            - "5433:5432"
         env_file:
             - .env
         environment:
             POSTGRES_USER: ${POSTGRES_USER:-devuser}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-devpass}
             POSTGRES_DB: ${POSTGRES_DB:-devdb}
+
+    redis:
+        image: redis:latest
+        restart: always
+        ports:
+            - "6379:6379"
 
     backend:
         image: cblaylock18/project-pancake-backend
@@ -23,10 +29,13 @@ services:
             - "3000:3000"
         depends_on:
             - postgres
+            - redis
         env_file:
             - .env
         environment:
             DATABASE_URL: ${DATABASE_URL}
+            REDISHOST: ${REDISHOST:-redis}
+            REDISPORT: ${REDISPORT:-6379}
             AUTH_SECRET: ${AUTH_SECRET}
             FRONTEND_ORIGIN_1: ${FRONTEND_ORIGIN_1}
             PORT: ${PORT:-3000}
