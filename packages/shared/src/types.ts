@@ -8,7 +8,6 @@ export type User = {
     createdAt: string;
     email: string;
     username: string;
-    password?: string;
     role: Role;
     googleId?: string;
     name?: string;

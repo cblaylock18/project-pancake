@@ -26,16 +26,14 @@ passport.use(
                 const user = await prisma.user.upsert({
                     where: { googleId: profile.id },
                     update: {
-                        // if they already exist, you can update fields here
+                        // if they already exist, make sure email is up to date
                         email: profile.emails?.[0]?.value,
-                        username: profile.displayName,
                     },
                     create: {
                         // if they don’t exist, create them
                         googleId: profile.id,
                         email: profile.emails?.[0]?.value ?? "",
                         username: profile.displayName,
-                        password: "", // Password is not used for Google auth
                     },
                 });
                 return done(null, user);

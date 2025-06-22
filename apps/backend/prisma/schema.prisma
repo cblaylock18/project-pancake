@@ -17,14 +17,69 @@ model User {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   email     String   @unique
-  username  String   @unique
-  password  String
+  username  String
   googleId  String?  @unique
-  role      Role     @default(USER)
-  name      String?
+  githubId  String?  @unique
+
+  roomsAsP1  Room[]      @relation("PlayerOne")
+  roomsAsP2  Room[]      @relation("PlayerTwo")
+  gamesWon   Game[]      @relation("GameWinner")
+  gamesLost  Game[]      @relation("GameLoser")
+  turnsTaken Turn[]      @relation("TurnPlayer")
+  TurnState  TurnState[]
 }
 
-enum Role {
-  USER
-  ADMIN
+model Room {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  roomCode  String   @unique
+  isActive  Boolean  @default(true)
+
+  p1Id String
+  p2Id String
+  p1   User   @relation("PlayerOne", fields: [p1Id], references: [id])
+  p2   User   @relation("PlayerTwo", fields: [p2Id], references: [id])
+
+  games Game[]
+}
+
+model Game {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  isActive  Boolean  @default(true)
+
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id])
+
+  winnerId String?
+  loserId  String?
+  winner   User?   @relation("GameWinner", fields: [winnerId], references: [id])
+  loser    User?   @relation("GameLoser", fields: [loserId], references: [id])
+
+  turnState TurnState?
+  turns     Turn[]
+}
+
+model TurnState {
+  id           String  @id @default(uuid())
+  gameId       String  @unique
+  roundScore   Int
+  turnPlayerId String
+  isRolling    Boolean @default(false)
+  isBanking    Boolean @default(false)
+
+  game       Game @relation(fields: [gameId], references: [id])
+  turnPlayer User @relation(fields: [turnPlayerId], references: [id])
+}
+
+model Turn {
+  id       String @id @default(uuid())
+  gameId   String
+  playerId String
+  round    Int
+  action   String // "bank", "farkle", "endTurn", etc.
+  score    Int
+
+  game   Game @relation(fields: [gameId], references: [id])
+  player User @relation("TurnPlayer", fields: [playerId], references: [id])
 }
