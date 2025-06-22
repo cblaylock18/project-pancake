@@ -12,7 +12,6 @@ import { useAuth } from "./context/AuthContext";
 const Sidney: User = {
     id: "some string",
     username: "some other string",
-    password: "lamb",
     createdAt: "today",
     email: "something@lamb.pancake",
     role: Role.USER,
