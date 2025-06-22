@@ -11,9 +11,14 @@ import {
 } from "prisma-extension-redis";
 
 // Redis “client” config for prisma-extension-redis
+const redisURL = new URL(env.REDIS_URL);
+
 const client = {
-    host: env.REDISHOST, // e.g. "localhost" or your Railway host
-    port: env.REDISPORT, // a number
+    family: 0, // 0 (IPv4) or 6 (IPv6)
+    host: redisURL.hostname, // e.g. "localhost" or your Railway host
+    port: redisURL.port, // a number,
+    username: redisURL.username,
+    password: redisURL.password,
 };
 
 // logger
