@@ -3,7 +3,6 @@ import "./App.css";
 
 // example for you for shared types!
 import type { User } from "@shared/types";
-import { Role } from "@shared/types";
 import DiceBoxContainer from "./DiceBoxContainer";
 import LoginButton from "./Auth/LoginButton";
 import LogoutButton from "./Auth/LogoutButton";
@@ -14,7 +13,6 @@ const Sidney: User = {
     username: "some other string",
     createdAt: "today",
     email: "something@lamb.pancake",
-    role: Role.USER,
 };
 console.log(`hi ${Sidney.username}!!!`);
 // end of example!
