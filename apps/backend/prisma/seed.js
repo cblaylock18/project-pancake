@@ -25,7 +25,7 @@ async function main() {
     });
 
     // Create a room with alice and bob
-    const room = await prisma.room.create({
+    const room = await prisma.room.upsert({
         data: {
             roomCode: "TEST",
             p1Id: alice.id,
