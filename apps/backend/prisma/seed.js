@@ -26,7 +26,9 @@ async function main() {
 
     // Create a room with alice and bob
     const room = await prisma.room.upsert({
-        data: {
+        where: { roomCode: "TEST" },
+        update: {},
+        create: {
             roomCode: "TEST",
             p1Id: alice.id,
             p2Id: bob.id,
